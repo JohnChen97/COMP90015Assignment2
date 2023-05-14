@@ -19,17 +19,42 @@ public class RemoteWhiteBoard extends UnicastRemoteObject implements IRemoteWhit
         Button redButton = new Button("Red");
         Button blueButton = new Button("Blue");
         Button greenButton = new Button("Green");
+        Button eraseButton = new Button("Erase");
         Panel buttonPanel = new Panel();
         buttonPanel.add(clearButton);
         buttonPanel.add(redButton);
         buttonPanel.add(blueButton);
         buttonPanel.add(greenButton);
+        buttonPanel.add(eraseButton);
+
+        JTextField fillOvalSizeField = new JTextField(5);
+        Button confirmFillOvalSizeButton = new Button("Confirm");
+        Panel fillOvalSizePanel = new Panel();
+        fillOvalSizePanel.add(fillOvalSizeField);
+        fillOvalSizePanel.add(confirmFillOvalSizeButton);
+        this.frame.add(fillOvalSizePanel, BorderLayout.WEST);
+
+        Button fillOvalButton = new Button("Oval");
+        Button fillRectangleButton = new Button("Rectangle");
+        Button fillTriangleButton = new Button("Triangle");
+        Button fillSquareButton = new Button("Square");
+        Button fillStarButton = new Button("Star");
+        Panel fillShapePanel = new Panel();
+        fillShapePanel.add(fillOvalButton);
+        fillShapePanel.add(fillRectangleButton);
+        fillShapePanel.add(fillTriangleButton);
+        fillShapePanel.add(fillSquareButton);
+        fillShapePanel.add(fillStarButton);
+        this.frame.add(fillShapePanel, BorderLayout.NORTH);
+
+
+
         this.frame.add(buttonPanel, BorderLayout.SOUTH);
         this.frame.pack();
         this.frame.setVisible(true);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setLocationRelativeTo(null);
-        this.frame.setVisible(true);
+        // this.frame.setVisible(true);
 
         clearButton.addActionListener(e -> {
             try {
@@ -63,7 +88,61 @@ public class RemoteWhiteBoard extends UnicastRemoteObject implements IRemoteWhit
             }
         });
 
+        eraseButton.addActionListener(e -> {
+            try {
+                whiteBoardPanel.setColor(Color.WHITE);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
 
+        confirmFillOvalSizeButton.addActionListener(e -> {
+            try {
+                whiteBoardPanel.setFillSize(Integer.parseInt(fillOvalSizeField.getText()));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        fillOvalButton.addActionListener(e -> {
+            try {
+                whiteBoardPanel.setShape("Oval");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        fillRectangleButton.addActionListener(e -> {
+            try {
+                whiteBoardPanel.setShape("Rectangle");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        fillTriangleButton.addActionListener(e -> {
+            try {
+                whiteBoardPanel.setShape("Triangle");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        fillSquareButton.addActionListener(e -> {
+            try {
+                whiteBoardPanel.setShape("Square");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        fillStarButton.addActionListener(e -> {
+            try {
+                whiteBoardPanel.setShape("Star");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -81,13 +160,19 @@ public class RemoteWhiteBoard extends UnicastRemoteObject implements IRemoteWhit
         this.whiteBoardPanel .clearImage();
     }
 
+    @Override
+    public void erase(int x, int y) throws RemoteException {
+        this.whiteBoardPanel .erase(x, y);
+    }
 
-    public static void main(String[] args) {
-        try {
-            new RemoteWhiteBoard();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void setFillSize(int fillOvalSize) throws RemoteException {
+        this.whiteBoardPanel .setFillSize(fillOvalSize);
+    }
+
+    @Override
+    public void displayFrame() {
+        this.frame.setVisible(true);
     }
 
 }

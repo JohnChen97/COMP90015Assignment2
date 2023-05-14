@@ -14,24 +14,19 @@ public class Client {
 
     public static void main(String[] args){
 
-
-
         try {
 //            RemoteWhiteBoard remoteWhiteBoard = (RemoteWhiteBoard) Naming.lookup("rmi://" + this.host + ":" + this.port + "/WhiteBoard");
-            Registry registry = LocateRegistry.getRegistry("localhost", 8000);
-            IRemoteWhiteBoard remoteBoard = (IRemoteWhiteBoard) registry.lookup("RemoteWhiteBoardServer");
-            remoteBoard.draw(0, 0);
-
+            System.setProperty("java.security.policy", "RemoteWhiteBoardPolicy");
+            Registry registry = LocateRegistry.getRegistry("127.0.0.1", 8000);
+            IRemoteWhiteBoard stub = (IRemoteWhiteBoard) registry.lookup("RemoteWhiteBoardServer");
+            stub.displayFrame();
 
         } catch (NotBoundException e) {
             throw new RuntimeException(e);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-
-
     }
-
 }
 
 
